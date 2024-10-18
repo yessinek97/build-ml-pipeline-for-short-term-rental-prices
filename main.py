@@ -37,7 +37,6 @@ def go(config: DictConfig):
     with tempfile.TemporaryDirectory() as tmp_dir:
 
         if "download" in active_steps:
-
             # IMPORTANT: couldn't work with remote repo, due to conflicts in dependencies
             # so had to work with the local implementation of the download step
             _ = mlflow.run(
@@ -79,10 +78,16 @@ def go(config: DictConfig):
             )
 
         if "data_split" in active_steps:
-            ##################
-            # Implement here #
-            ##################
-            pass
+            # IMPORTANT: couldn't work with remote repo, due to conflicts in dependencies
+            # so had to work with the local implementation of the download step
+            _ = mlflow.run(
+                os.path.join(root_path, "components", "train_val_test_split"),
+                "main",
+                parameters={
+                    "input": "clean_sample.csv:latest",
+                    "test_size": config["modeling"]["test_size"],
+                }
+            )
 
         if "train_random_forest" in active_steps:
 
