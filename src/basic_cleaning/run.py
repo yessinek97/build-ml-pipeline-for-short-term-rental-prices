@@ -6,8 +6,6 @@ import argparse
 import logging
 import wandb
 import pandas as pd
-from ydata_profiling import ProfileReport
-
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)-15s %(message)s")
 logger = logging.getLogger()
@@ -27,8 +25,13 @@ def go(args):
     raw_df = pd.read_csv(artifact_local_path)
 
     # Drop outliers
-    idx = raw_df['price'].between(args.min_price, args.max_price)
+    idx = (
+        raw_df['price'].between(args.min_price, args.max_price) &
+        raw_df['longitude'].between(-74.25, -73.50) &
+        raw_df['latitude'].between(40.5, 41.2)
+        )
     clean_df = raw_df[idx].copy()
+    
     # Convert last_review to datetime
     clean_df['last_review'] = pd.to_datetime(clean_df['last_review'])
 

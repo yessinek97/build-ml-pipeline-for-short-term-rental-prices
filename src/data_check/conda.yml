@@ -8,6 +8,6 @@ dependencies:
   - pytest
   - scipy
   - pip=23.3.1
+  - wandb
   - pip:
       - mlflow
-      - wandb
