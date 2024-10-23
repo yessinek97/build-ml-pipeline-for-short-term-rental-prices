@@ -8,4 +8,8 @@ class Value(BaseModel):
 
 @app.post('/{path}')
 async def exercise_function(path: int, query: int, body: Value):
-  return {"path": path, "query": query, "body": body}
+  return {
+    "path": path, 
+    "query": query, 
+    "body": body
+}
